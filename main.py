@@ -53,24 +53,30 @@ except:
      pingms=2
 
 print("-Calculated action delay: "+str(pingms))
+# Maximize window for no real reason
+browser.maximize_window()
 
 for i in range(int(nb)):
-     total=total+1
      passed=passed+1
      try:
           # Open browser.
-          browser.get("https://kahoot.it/")
-          if firstTime == False:
-               wait=WebDriverWait(browser, 3)
-               alert=wait.until(EC.alert_is_present())
-               alert.accept()
+          if firstTime == True:
+               browser.get("https://kahoot.it/")
+          else:
+               browser.execute_script("window.open('');")
+               browser.switch_to.window(browser.window_handles[total])
+               browser.get("https://kahoot.it/")
+          #if firstTime == False:
+          #     wait=WebDriverWait(browser, 3)
+          #     alert=wait.until(EC.alert_is_present())
+          #     alert.accept()
+          time.sleep((pingms/2))
           # Find game id element and enter game code.
           search=browser.find_element_by_name("gameId")
           search.click()
           search.send_keys(qp)
           search.send_keys(Keys.RETURN)
           print("-Joined Game")
-          time.sleep(pingms)
           print("-Entering name option")
           # Wait for browser to catch up. Edit equation later.
           time.sleep(pingms)
@@ -87,6 +93,7 @@ for i in range(int(nb)):
           passed=passed-1
      finally:
           firstTime=False
+          total=total+1
           time.sleep(pingms)
 browser.close()
 print("\n\n       Attempted: "+str(total)+" Succeeded: "+str(passed)+" Failed: "+str(failed)+"\n\n\n")
