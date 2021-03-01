@@ -1,27 +1,27 @@
 # Import packages. If error then install.
 try:
-    from selenium import webdriver
-    from selenium.webdriver.common.keys import Keys
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.common.exceptions import NoSuchElementException
-    from msedge.selenium_tools import Edge, EdgeOptions
-    import random, string, time, os, socket
+     from selenium import webdriver
+     from selenium.webdriver.common.keys import Keys
+     from selenium.webdriver.common.by import By
+     from selenium.webdriver.support.ui import WebDriverWait
+     from selenium.webdriver.support import expected_conditions as EC
+     from selenium.common.exceptions import NoSuchElementException
+     from msedge.selenium_tools import Edge, EdgeOptions
+     import random, string, time, os, socket
 except Exception:
-    import time
-    print("-Required packages not installed, installing now...")
-    time.sleep(2.5)
-    os.system("pip install selenium")
-    time.sleep(1)
-    from selenium import webdriver
-    from selenium.webdriver.common.keys import Keys
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.common.exceptions import NoSuchElementException
-    from msedge.selenium_tools import Edge, EdgeOptions
-    import random, string, time, os, socket
+     import time
+     print("-Required packages not installed, installing now...")
+     time.sleep(2.5)
+     os.system("pip install selenium")
+     time.sleep(1)
+     from selenium import webdriver
+     from selenium.webdriver.common.keys import Keys
+     from selenium.webdriver.common.by import By
+     from selenium.webdriver.support.ui import WebDriverWait
+     from selenium.webdriver.support import expected_conditions as EC
+     from selenium.common.exceptions import NoSuchElementException
+     from msedge.selenium_tools import Edge, EdgeOptions
+     import random, string, time, os, socket
 
 # Initialize the Webdriver variables. [Make option for chrome or edge]
 webdriver_location="MicrosoftWebDriver.exe"
@@ -59,6 +59,10 @@ for i in range(int(nb)):
      try:
           # Open browser.
           browser.get("https://kahoot.it/")
+          print(browser.switch_to.alert())
+          if browser.switch_to.alert():
+               alertOK=browser.switch_to.alert()
+               alertOK.accept()
           # Find game id element and enter game code.
           search=browser.find_element_by_name("gameId")
           search.click()
@@ -80,8 +84,9 @@ for i in range(int(nb)):
           search.send_keys(Keys.CONTROL+"A")
           search.send_keys(''.join(random.choice(string.ascii_letters) for _ in range(10)))
           search.send_keys(Keys.RETURN)
-     except (Exception,NoSuchElementException):
+     except (Exception,NoSuchElementException) as e:
           # Edit stats to show failed connect.
+          print(e)
           failed=failed+1
           passed=passed-1
      finally:
