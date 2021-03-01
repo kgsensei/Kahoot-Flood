@@ -33,6 +33,7 @@ browser=Edge(options=options,executable_path=webdriver_location)
 os.system("cls")
 time.sleep(10)
 # Setup bot and stat variables
+firstTime=True
 failed=0
 passed=0
 total=0
@@ -59,10 +60,10 @@ for i in range(int(nb)):
      try:
           # Open browser.
           browser.get("https://kahoot.it/")
-          print(browser.switch_to.alert())
-          if browser.switch_to.alert():
-               alertOK=browser.switch_to.alert()
-               alertOK.accept()
+          if firstTime == False:
+               wait=WebDriverWait(browser, 3)
+               alert=wait.until(EC.alert_is_present())
+               alert.accept()
           # Find game id element and enter game code.
           search=browser.find_element_by_name("gameId")
           search.click()
@@ -70,14 +71,9 @@ for i in range(int(nb)):
           search.send_keys(Keys.RETURN)
           print("-Joined Game")
           time.sleep(pingms)
-          # If start over found click it. [Still not ready for kahoot]
-          if browser.find_elements_by_css_selector('.secondary-button.start-over'):
-               g=browser.find_elements_by_css_selector('.secondary-button.start-over')
-               print("-Start-Over button found")
-               g[0].click()
           print("-Entering name option")
           # Wait for browser to catch up. Edit equation later.
-          time.sleep((pingms/2))
+          time.sleep(pingms)
           # Find nickname element and enter random characters.
           search=browser.find_element_by_name("nickname")
           search.click()
@@ -90,6 +86,7 @@ for i in range(int(nb)):
           failed=failed+1
           passed=passed-1
      finally:
+          firstTime=False
           time.sleep(pingms)
 browser.close()
 print("\n\n       Attempted: "+str(total)+" Succeeded: "+str(passed)+" Failed: "+str(failed)+"\n\n\n")
