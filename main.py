@@ -89,8 +89,10 @@ for i in range(int(nb)):
      except (Exception,NoSuchElementException) as e:
           # Edit stats to show failed connect.
           print(e)
+          nb=int(nb)+2
           failed=failed+1
           passed=passed-1
+          time.sleep(2)
      finally:
           firstTime=False
           total=total+1
